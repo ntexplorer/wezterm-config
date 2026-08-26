@@ -5,6 +5,8 @@ local act = wezterm.action
 
 local mod = {}
 
+local home = wezterm.home_dir:gsub('^file://', '')
+
 if platform.is_mac then
    mod.SUPER = 'SUPER'
    mod.SUPER_REV = 'SUPER|CTRL'
@@ -190,14 +192,34 @@ local keys = {
    { key = 'w',     mods = mod.SUPER,     action = act.CloseCurrentPane({ confirm = false }) },
 
    -- panes: navigation
-   { key = 'k',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Up') },
-   { key = 'j',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Down') },
-   { key = 'h',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Left') },
-   { key = 'l',     mods = mod.SUPER_REV, action = act.ActivatePaneDirection('Right') },
+   { key = 'k', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection('Up') },
+   { key = 'j', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection('Down') },
+   { key = 'h', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection('Left') },
+   { key = 'l', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection('Right') },
+   { key = 'p', mods = 'CTRL|SHIFT', action = act.PaneSelect({ alphabet = '1234567890' }) },
    {
       key = 'p',
       mods = mod.SUPER_REV,
       action = act.PaneSelect({ alphabet = '1234567890', mode = 'SwapWithActiveKeepFocus' }),
+   },
+   {
+      key = 'a',
+      mods = 'CTRL|SHIFT',
+      action = wezterm.action_callback(function(_window, pane)
+         local cwd = pane:get_current_working_dir()
+         local right = pane:split({
+            direction = 'Right',
+            size = 0.3,
+            args = { home .. [[\.local\bin\cliamp.exe]] },
+         })
+         right:split({
+            direction = 'Bottom',
+            size = 0.5,
+            cwd = cwd,
+            args = { 'pwsh.exe', '-NoLogo', '-Command', 'sleev' },
+         })
+         pane:activate()
+      end),
    },
 
    -- panes: scroll pane
