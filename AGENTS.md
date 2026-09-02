@@ -50,12 +50,35 @@
 
 ## ⚠️ opencode Provider 配置坑位
 
-用户订阅的是**智谱 GLM 编码套餐**，opencode 官网文档默认的 `zai` provider **不适用**。正确配置（`~/.config/opencode/opencode.jsonc`）：
+用户订阅的是**智谱 GLM 编码套餐**（provider：`zhipuai-coding-plan`，上游 `https://open.bigmodel.cn/api/coding/paas/v4`）。sleev 1.8.0 的 `harness opencode` 自动接线列表**只支持 `zai-coding-plan` 不支持智谱**，且网关对 `sleev-provider` 头有白名单（乱填报 `Unknown sleev-provider header`）。
 
-- provider 名：`zhipuai-coding-plan`
-- `baseURL`：`http://127.0.0.1:17321`（sleev 本地代理，请求经 sleev 转发）
-- **sleev 未运行时 opencode 无法发起任何模型请求**——遇到连接错误先检查 sleev
-- 认证密钥由用户自行配置，**任何密钥不得写入本仓库**
+**正确做法：走 sleev 的 custom provider 机制**（官方文档 `/docs/config/custom-providers`），`~/.config/opencode/opencode.jsonc` 完整配置（2026-09-03 实测验证 200 OK）：
+
+```jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "compaction": { "prune": false },
+  "provider": {
+    "zhipuai-coding-plan": {
+      "options": {
+        "headers": {
+          "sleev-harness": "opencode",
+          "sleev-base-url": "https://open.bigmodel.cn/api/coding/paas/v4"
+        },
+        "baseURL": "http://127.0.0.1:17321"
+      }
+    }
+  }
+}
+```
+
+要点：
+
+- **用 `sleev-base-url` 头指定上游，不要发 `sleev-provider` 头**（custom provider 场景下发它会撞白名单）
+- `compaction.prune: false` 必须保留——禁用 opencode 自带裁剪，避免与 sleev 的压缩冲突（sleev 官方 enable 时也会写这一项）
+- API 密钥留在 `~/.local/share/opencode/auth.json`（`/connect` 命令存储），网关透传 Authorization，**任何密钥不得写入本仓库**
+- **sleev 未运行时 opencode 无法发起任何模型请求**——遇到连接错误先检查 sleev（网关装成计划任务常驻，一般无需手动启动）
+- 验证方法：网关日志 `%LOCALAPPDATA%\sleev\debug-logs\server\gateway.err.log` 应出现 `POST open.bigmodel.cn/... OK`；`sleev usage --json` 可查用量
 
 ## 个人定制键位速查（相对上游的改动，均在 `config/bindings.lua`）
 
