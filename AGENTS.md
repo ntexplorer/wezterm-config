@@ -10,7 +10,7 @@
 
 ## 新机器 Bootstrap
 
-前提：用户已自行安装 node/npm、opencode、wezterm、git。以下由你（opencode）完成：
+前提：用户已自行安装 node/npm、opencode、wezterm、git、PowerShell 7（`pwsh`，launch.lua 的默认 shell）。以下由你（opencode）完成：
 
 1. **部署本配置**（若 `~/.config/wezterm` 尚非本 fork）：
    ```powershell
@@ -36,17 +36,26 @@
    if ($p -notlike '*.local\bin*') { [Environment]::SetEnvironmentVariable('Path', $p.TrimEnd(';') + ';' + "$env:USERPROFILE\.local\bin", 'User') }
    ```
 
-5. **安装 sleev**：
+5. **安装 sleev 并登录**：
    ```powershell
    npm i -g sleev
    ```
+   然后让用户运行一次 `sleev` TUI，用账号登录（ntexplorer@qq.com）。登录后网关会自动安装为 Windows 计划任务并常驻 `127.0.0.1:17321`，无需手动启动。`sleev status` 应显示 `healthy: true`。
 
 6. **安装 ffmpeg 与 yt-dlp**（cliamp 可选运行时依赖：ffmpeg 补 AAC/ALAC/Opus/WMA 格式，yt-dlp 补 YouTube/B站/SoundCloud 等流媒体源）：
    ```powershell
    winget install Gyan.FFmpeg
    winget install yt-dlp.yt-dlp
    ```
-   > 注：yt-dlp 会自动带上 Deno 与 yt-dlp.FFmpeg 两个依赖，属正常现象。
+   > 注：yt-dlp 会自动带上 Deno 与 yt-dlp.FFmpeg 两个依赖，属正常现象；两份 ffmpeg 共存无害。
+
+7. **接线 opencode → sleev**：按下方「⚠️ opencode Provider 配置坑位」写入 `~/.config/opencode/opencode.jsonc`，并提醒用户在新 opencode 会话里执行 `/connect` 选择 **Zhipu AI Coding Plan** 粘贴 API 密钥（存入 auth.json，与网关无关）。
+
+8. **部署后自检**（全部通过才算完成）：
+   - `wezterm show-keys` 退出码 0，且能看到 `CTRL H/J/K/L`（即 CTRL+SHIFT 方向切 pane，显示怪癖见维护规约）
+   - `~\.local\bin\cliamp.exe --version` 正常输出
+   - `sleev status` 网关 healthy
+   - 新开 opencode 会话发一条消息，网关日志出现 `POST open.bigmodel.cn/... OK`
 
 ## ⚠️ opencode Provider 配置坑位
 
@@ -96,4 +105,5 @@
 - Lua 代码风格遵循仓库 `.stylua.toml`（缩进 3 空格等）
 - commit 风格沿用上游 conventional commits：`type(scope): message`，如 `feat(config.bindings): ...`
 - 修改配置后用 `wezterm show-keys` 验证解析无错、键位已注册
+  > 显示怪癖：`CTRL|SHIFT+小写字母` 会被折叠显示为大写字母，如 `CTRL H` = `CTRL+SHIFT+h`，不要误判为绑定丢失
 - 改动提交到 `personal` 分支并 `git push mine personal`，不要动 `master`
