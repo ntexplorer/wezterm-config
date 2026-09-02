@@ -20,12 +20,15 @@
 
 2. **安装字体**（配置使用 JetBrainsMono Nerd Font，缺失会字体回退）：
    ```powershell
-   winget install nerd-fonts.JetBrainsMonoNerdFont
+   winget install DEVCOM.JetBrainsMonoNerdFont
    ```
+   > 注：旧 ID `nerd-fonts.JetBrainsMonoNerdFont` 已从 winget 源下架（2026-09 实测找不到），若 `DEVCOM.JetBrainsMonoNerdFont` 也失效，从 https://github.com/ryanoasis/nerd-fonts/releases 手动下载安装。
 
-3. **安装 cliamp**（TUI 音乐播放器，单文件 exe）：
-   - 从 https://github.com/bjarneo/cliamp/releases 下载最新 `cliamp-windows-amd64.exe`
-   - 存为 `$env:USERPROFILE\.local\bin\cliamp.exe`（目录不存在则创建；配置中按 `~\.local\bin\cliamp.exe` 全路径引用）
+3. **安装 cliamp**（TUI 音乐播放器）：
+   - 从 https://github.com/bjarneo/cliamp/releases 下载最新 **`cliamp-windows-amd64.zip`**（不要下裸 `cliamp-windows-amd64.exe`）
+   - 解压**全部内容**（`cliamp.exe` + `libmpg123-0.dll` 等 6 个编解码 DLL）到 `$env:USERPROFILE\.local\bin\`（目录不存在则创建；配置中按 `~\.local\bin\cliamp.exe` 全路径引用，DLL 必须与 exe 同目录）
+   - 下载后用 release 的 `checksums.txt` 做 SHA256 校验
+   > 踩坑记录（2026-09）：裸 exe 动态链接 libmpg123-0.dll 等编解码库，缺失会弹「系统错误：找不到 libmpg123-0.dll」。官方 README 明确 Windows 应使用 zip 版。
 
 4. **追加 PATH**（幂等，已含则跳过）：
    ```powershell
@@ -37,6 +40,13 @@
    ```powershell
    npm i -g sleev
    ```
+
+6. **安装 ffmpeg 与 yt-dlp**（cliamp 可选运行时依赖：ffmpeg 补 AAC/ALAC/Opus/WMA 格式，yt-dlp 补 YouTube/B站/SoundCloud 等流媒体源）：
+   ```powershell
+   winget install Gyan.FFmpeg
+   winget install yt-dlp.yt-dlp
+   ```
+   > 注：yt-dlp 会自动带上 Deno 与 yt-dlp.FFmpeg 两个依赖，属正常现象。
 
 ## ⚠️ opencode Provider 配置坑位
 
