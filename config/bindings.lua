@@ -217,11 +217,30 @@ local keys = {
             cwd = cwd,
             args = { 'pwsh.exe', '-NoLogo', '-Command', 'sleev' },
          })
-         pane:activate()
-      end),
-   },
+          pane:activate()
+       end),
+    },
+    {
+       key = 'b',
+       mods = 'CTRL|SHIFT',
+       action = wezterm.action_callback(function(_window, pane)
+          local cwd = pane:get_current_working_dir()
+          local right = pane:split({
+             direction = 'Right',
+             size = 0.3,
+             cwd = cwd,
+             args = { 'pwsh.exe', '-NoLogo', '-Command', 'sleev' },
+          })
+          right:split({
+             direction = 'Bottom',
+             size = 0.5,
+             args = { 'pwsh.exe', '-NoLogo', '-Command', 'pet' },
+          })
+          pane:activate()
+       end),
+    },
 
-   -- panes: scroll pane
+    -- panes: scroll pane
    { key = 'u',        mods = mod.SUPER, action = act.ScrollByLine(-5) },
    { key = 'd',        mods = mod.SUPER, action = act.ScrollByLine(5) },
    { key = 'PageUp',   mods = 'NONE',    action = act.ScrollByPage(-0.75) },

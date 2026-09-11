@@ -21,6 +21,7 @@
 | `CTRL+SHIFT+p` | 显示 pane 编号，按数字切换焦点（PaneSelect Activate） | 新增 |
 | `CTRL+ALT+p` | Swap pane（与选中 pane 交换位置，保持焦点） | 上游原有 |
 | `CTRL+SHIFT+a` | 三分屏工作区：左 70% 保留当前程序（opencode），右上开 cliamp，右下同路径开 sleev，焦点回左侧 | 新增 |
+| `CTRL+SHIFT+b` | 宠物工作区：左 70% 保留当前程序（opencode），右上开 sleev，右下开 pet（cli-pet，依赖 `$PROFILE` 的 pet 函数），焦点回左侧 | 新增 |
 | `ALT+\` / `CTRL+ALT+\` | 垂直 / 水平分屏 | 上游原有 |
 | `CTRL+ALT+Space` | LEADER 前缀（`LEADER+f` 字号、`LEADER+p` 调整 pane 尺寸） | 上游原有 |
 
