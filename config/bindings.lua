@@ -201,25 +201,6 @@ local keys = {
       mods = mod.SUPER_REV,
       action = act.PaneSelect({ alphabet = '1234567890', mode = 'SwapWithActiveKeepFocus' }),
    },
-   {
-      key = 'a',
-      mods = 'CTRL|SHIFT',
-      action = wezterm.action_callback(function(_window, pane)
-         local cwd = pane:get_current_working_dir()
-         local right = pane:split({
-            direction = 'Right',
-            size = 0.3,
-            args = { home .. [[\.local\bin\cliamp.exe]] },
-         })
-         right:split({
-            direction = 'Bottom',
-            size = 0.5,
-            cwd = cwd,
-            args = { 'pwsh.exe', '-NoLogo', '-Command', 'sleev' },
-         })
-          pane:activate()
-       end),
-    },
     {
        key = 'b',
        mods = 'CTRL|SHIFT',

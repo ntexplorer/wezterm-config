@@ -2,7 +2,7 @@
 
 本文件供 opencode 读取，说明本 fork（wezterm 配置）的维护方式与个人定制键位。
 
-> **新机器完整环境部署**（wezterm + opencode + sleev + cliamp + skills，含全部踩坑记录）见私有主手册仓库 `ntexplorer/ai-dev-setup` 的 `AGENTS.md`，本仓库仅是其 wezterm 步骤的落地仓库。部署本配置：
+> **新机器完整环境部署**（wezterm + opencode + sleev + cli-pet + skills，含全部踩坑记录）见私有主手册仓库 `ntexplorer/ai-dev-setup` 的 `AGENTS.md`，本仓库仅是其 wezterm 步骤的落地仓库。部署本配置：
 > ```powershell
 > git clone -b personal https://github.com/ntexplorer/wezterm-config.git "$env:USERPROFILE\.config\wezterm"
 > ```
@@ -20,7 +20,6 @@
 | `CTRL+SHIFT+h/j/k/l` | 方向切换 pane | 原上游为 `CTRL+ALT`（Windows 热键冲突，已弃用） |
 | `CTRL+SHIFT+p` | 显示 pane 编号，按数字切换焦点（PaneSelect Activate） | 新增 |
 | `CTRL+ALT+p` | Swap pane（与选中 pane 交换位置，保持焦点） | 上游原有 |
-| `CTRL+SHIFT+a` | 三分屏工作区：左 70% 保留当前程序（opencode），右上开 cliamp，右下同路径开 sleev，焦点回左侧 | 新增 |
 | `CTRL+SHIFT+b` | 宠物工作区：左 70% 保留当前程序（opencode），右上开 sleev，右下开 pet（cli-pet，依赖 `$PROFILE` 的 pet 函数），焦点回左侧 | 新增 |
 | `ALT+\` / `CTRL+ALT+\` | 垂直 / 水平分屏 | 上游原有 |
 | `CTRL+ALT+Space` | LEADER 前缀（`LEADER+f` 字号、`LEADER+p` 调整 pane 尺寸） | 上游原有 |
