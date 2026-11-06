@@ -224,8 +224,8 @@ local keys = {
     -- panes: scroll pane
    { key = 'u',        mods = mod.SUPER, action = act.ScrollByLine(-5) },
    { key = 'd',        mods = mod.SUPER, action = act.ScrollByLine(5) },
-   { key = 'PageUp',   mods = 'NONE',    action = act.ScrollByPage(-0.75) },
-   { key = 'PageDown', mods = 'NONE',    action = act.ScrollByPage(0.75) },
+   -- PageUp/PageDown removed from global bindings (1106): pass through to oc TUI
+   -- terminal scroll: Alt+U/D above; F1 copy mode paging is wezterm built-in
 
    -- key-tables --
    -- resizes fonts
